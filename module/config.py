@@ -8,17 +8,17 @@ CAPTURE_RES_Y = 1232
 FRAME_RES_X = 1024
 # Y Resolution of frame (Pixel)
 FRAME_RES_Y = 768
-# Camera Horizontal FOV angle (Deg, �)
+# Camera Horizontal FOV angle (Degrees, °)
 FOV_H_DEG = 51.4
-# Camera Vertical FOV angle (Degrees, �)
+# Camera Vertical FOV angle (Degrees, °)
 FOV_V_DEG = 39.4
 # Camera height (Meters, m)
 CAMERA_H = 2.545
-# Camera pitch angle (Degrees, �)
+# Camera pitch angle (Degrees, °)
 CAMERA_PITCH_DEG = 35
-# Posizione assoluta x (Buttare)
+# Absolute position x (Meters, m)
 CAMERA_POS_X = 4.5
-# Posizione assoluta y (Buttare)
+# Absolute position y (Meters, m)
 CAMERA_POS_Y = 0.8
 
 
@@ -46,4 +46,5 @@ MODULE_NAME = "MODULE1"
 
 # MQTT Broker IPv4 Address
 BROKER_IP_ADDRESS = "192.168.1.33"
-TOPIC = "CV/MODULE1"
+# MQTT Publishing Topic name.
+TOPIC = "CV/" + MODULE_NAME
