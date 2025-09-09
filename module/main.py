@@ -1,5 +1,6 @@
 import cv2
 import time
+import json
 import argparse
 from inference import Inference
 from camera_stream import CameraStream
@@ -44,7 +45,7 @@ if __name__ == "__main__":
             drawing.draw(frame, valid_tracked)
         if args.send:
             formatted = inference.format(valid_tracked)
-            sender.send(str(formatted))
+            sender.send(json.dumps(formatted))
         if (drawing.exit()):
             break
         frame_number = frame_number + 1 if frame_number < 1000 else 0

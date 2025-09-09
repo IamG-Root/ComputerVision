@@ -4,7 +4,7 @@
 
 ### Module
 
-- Install virtual environment using `make setup`;
+- Install virtual environment using `make module`;
 - Activate python virtual environment: `source cvenv\bin\activate`;
 - If not done yet, export your model in ncnn format using: `yolo export model=mymodel.pt format=ncnn`
 - Setup your `config.py` file;
@@ -14,4 +14,7 @@
     - `--send` Send detections to server.
 
 ### Server
-...
+
+- Install virtual environment using `make server`;
+- Activate python virtual environment: `source cvenv\bin\activate`;
+- Launch using `python receiver.py`.
