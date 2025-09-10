@@ -46,5 +46,5 @@ MODULE_NAME = "MODULE1"
 
 # MQTT Broker IPv4 Address
 BROKER_IP_ADDRESS = "192.168.1.33"
-# MQTT Publishing Topic name.
+# MQTT Publishing Topic name
 TOPIC = "CV/" + MODULE_NAME
