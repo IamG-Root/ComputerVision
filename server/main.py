@@ -50,8 +50,16 @@ def main():
     init_receiver()
     while True:
         with lock:
+            general_snapshot = []
+            # Assign sensor origin to tracked objects.
             for module_id, module_data in modules_data.items():
-                print(f"MODULE {module_id}: {json.dumps(module_data)}\n")
+                for obj in module_data:
+                    obj = dict(obj)
+                    obj["sensor"] = module_id
+                    general_snapshot.append(obj)
+            # Printing for debug.
+            for obj in general_snapshot:
+                print(f"{obj}")
         time.sleep(0.1)
 
 
