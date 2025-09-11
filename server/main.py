@@ -57,9 +57,15 @@ def main():
                     obj = dict(obj)
                     obj["sensor"] = module_id
                     general_snapshot.append(obj)
-            # Printing for debug.
-            for obj in general_snapshot:
-                print(f"{obj}")
+            
+            # Group tracked objects by class.
+            if general_snapshot:
+                snapshot_by_class = {}
+                for obj in general_snapshot:
+                    snapshot_by_class.setdefault(obj["class"], []).append(obj)
+                # Print classes for debug.
+                for classid, objs in snapshot_by_class.items():
+                    print(f"Classe {classid}: {objs}")
         time.sleep(0.1)
 
 
