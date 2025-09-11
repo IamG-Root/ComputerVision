@@ -1,7 +1,7 @@
 import math
 import config as cfg
 from ultralytics import YOLO
-from utils import pixel_to_world
+from utils import pixel_to_world, calculate_position
 
 class Inference:
     def __init__(self):
@@ -20,7 +20,7 @@ class Inference:
             center = int((x1 + x2) / 2), int((y1 + y2) / 2)
             ground_origin = (int(x1 + ((x2 - x1)/2)), y2)
             wx, wz, wdist = pixel_to_world(ground_origin[0], ground_origin[1])
-            detections.append({"box": (x1, y1, x2, y2), "ground": ground_origin, "center": center, "position": (round(wx + cfg.CAMERA_POS_X, 3), round(wz + cfg.CAMERA_POS_Y, 3)), "class": class_name})
+            detections.append({"box": (x1, y1, x2, y2), "ground": ground_origin, "center": center, "position": calculate_position(wx, wz), "class": class_name})
         return detections
 
     def track(self, frame_number, tracked, detections):

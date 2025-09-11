@@ -19,9 +19,13 @@ CAMERA_PITCH_DEG = 35
 # Absolute position x (Meters, m)
 CAMERA_POS_X = 4.5
 # Absolute position y (Meters, m)
-CAMERA_POS_Y = 0.8
-
-
+CAMERA_POS_Z = 0.8
+# Orientation [1 - 4]
+# 1: x = wx + CAMERA_POS_X | z = wz + CAMERA_POS_Z
+# 2: x = wz + CAMERA_POS_X | z = -wx + CAMERA_POS_Z
+# 3: x = -wx + CAMERA_POS_X | z = -wz + CAMERA_POS_Z
+# 4: x = -wz + CAMERA_POS_X | z = wx + CAMERA_POS_Z
+ORIENTATION = 1
 
 # ======= Model parameters =======
 

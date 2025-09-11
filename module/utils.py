@@ -3,6 +3,18 @@ import config as cfg
 
 ray_origin = (0.0, cfg.CAMERA_H, 0.0)
 
+def calculate_position(wx, wz):
+    if cfg.ORIENTATION == 1:
+        return (round(wx + cfg.CAMERA_POS_X, 3), round(wz + cfg.CAMERA_POS_Z, 3))
+    elif cfg.ORIENTATION == 2:
+        return (round(wz + cfg.CAMERA_POS_X, 3), round((-wx) + cfg.CAMERA_POS_Z, 3))
+    elif cfg.ORIENTATION == 3:
+        return (round((-wx) + cfg.CAMERA_POS_X, 3), round((-wz) + cfg.CAMERA_POS_Z, 3))
+    elif cfg.ORIENTATION == 4:
+        return (round((-wz) + cfg.CAMERA_POS_X, 3), round(wx + cfg.CAMERA_POS_Z, 3))
+    else:
+        return (0,0)
+
 def _pixel_to_direction(x, y, res_x, res_y, fov_h_deg, fov_v_deg):
     fov_h = np.radians(fov_h_deg)
     fov_v = np.radians(fov_v_deg)
