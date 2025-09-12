@@ -23,10 +23,14 @@ def on_connect(client, userdata, flags, rc):
         print(f"Connection failed with error code: {rc}")
 
 
+# Storing last received data from each module and sign every object with module_id
 def on_message(client, userdata, msg):
     module_id = msg.topic.split("MODULE")[1]
+    data = json.loads(msg.payload.decode('utf-8'))
     with lock:
-        modules_data[module_id] = json.loads(msg.payload.decode('utf-8'))
+        for obj in data:
+            obj["module"] = module_id
+        modules_data[module_id] = data
 
 
 def init_receiver():
@@ -50,23 +54,16 @@ def main():
     init_receiver()
     while True:
         with lock:
-            general_snapshot = []
-            # Assign sensor origin to tracked objects.
-            for module_id, module_data in modules_data.items():
-                for obj in module_data:
-                    obj = dict(obj)
-                    obj["sensor"] = module_id
-                    general_snapshot.append(obj)
-            
-            # Group tracked objects by class.
-            if general_snapshot:
-                snapshot_by_class = {}
-                for obj in general_snapshot:
-                    snapshot_by_class.setdefault(obj["class"], []).append(obj)
-                # Print classes for debug.
-                for classid, objs in snapshot_by_class.items():
-                    print(f"Classe {classid}: {objs}")
-        time.sleep(0.1)
+            # Group by class.
+            data_by_class = {}
+            for module_id, objs in modules_data.items():
+                for obj in objs:
+                    data_by_class.setdefault(obj["class"], []).append(obj)
+            # Print for debug.
+            for classe, objs in data_by_class.items():
+                print(f"{classe} --- {data_by_class[classe]}\n")
+        
+        time.sleep(1)
 
 
 if __name__ == "__main__":

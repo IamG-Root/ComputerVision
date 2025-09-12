@@ -30,6 +30,13 @@ uninstall_numpy: $(VENV_NAME)/bin/activate
 	$(VENV_NAME)/bin/pip uninstall -y numpy
 	@echo "\033[0;32mUninstalled numpy.\033[0m"
 
+# Exporting .pt models in ncnn format.
+export_models: $(VENV_NAME)/bin/activate
+	echo "\033[1;33mExporting models in ncnn format...\033[0m"
+	for model in models/*.pt; do \
+	$(VENV_NAME)/bin/yolo export model=$$model format=ncnn; \
+	done
+
 # Module setup.
 module: install_module uninstall_numpy
 	@echo "\033[0;32mModule setup completed.\033[0m"
