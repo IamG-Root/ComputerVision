@@ -24,6 +24,7 @@ def on_click(event, x, y, flags, param):
         print(f"Cliccato in X = {wx:.2f}m, Z = {wz:.2f}m, distanza = {dist:.2f}m")
     
 if __name__ == "__main__":
+    refactoring = True
     frame_number = 0
     args = parser()
     cam = CameraStream()
