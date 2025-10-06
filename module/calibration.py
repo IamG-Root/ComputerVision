@@ -1,8 +1,21 @@
 import cv2
+import config as cfg
 from camera_stream import CameraStream
+from utils import pixel_to_world, calculate_position
 
+def on_click(event, x, y, flags, param):
+    global mouseX, mouseY
+    if event == cv2.EVENT_LBUTTONDOWN:
+        mouseX,mouseY = x,y
+        wx, wz = pixel_to_world(mouseX, mouseY)
+        print(f"CAMERA: X = {wx:.2f}m, Z = {wz:.2f}m")
+        wx, wz = calculate_position(wx, wz)
+        print(f"ABSOLUTE: X = {wx:.2f}m, Z = {wz:.2f}m")
+            
 if __name__ == "__main__":
     cam = CameraStream()
+    cv2.namedWindow("Calibration")
+    cv2.setMouseCallback("Calibration", on_click)
     while True:
         frame = cam.capture_frame()
         height, width, ch = frame.shape

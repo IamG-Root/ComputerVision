@@ -1,21 +1,45 @@
 import cv2
+import config as cfg
+from utils import pixel_to_world, calculate_position
 
-class Drawing:
+class Graphic:
+    def draw(self, frame, entities):
+        pass
+    def exit(self):
+        return False
+    def stop(self):
+        pass
+
+class Drawing(Graphic):
     def __init__(self):
-        cv2.namedWindow("Cattura")
+        cv2.namedWindow(cfg.MODULE_NAME)
+        cv2.setMouseCallback(cfg.MODULE_NAME, self.on_click)
 
-    def draw(self, frame, results):
-        for id, track in results.items():
-            x1, y1, x2, y2 = map(int, track["box"])
-            cx, cy = track["center"]
+    def draw(self, frame, entities):
+        for id, entity in entities.items():
+            x1, y1, x2, y2 = map(int, entity.box)
+            cx, cy = entity.center
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0,255,0), 2)
-            class_name = track["class"]
+            class_name = entity.class_name
             cv2.putText(frame, f"CLASS: {class_name}", (x1, y1 - 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
             cv2.putText(frame, f"ID: {id}", (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
-        cv2.imshow("Cattura", frame)
+        cv2.imshow(cfg.MODULE_NAME, frame)
 
     def exit(self):
         return (cv2.waitKey(1) & 0xFF == ord('q'))
 
     def stop(self):
         cv2.destroyAllWindows()
+    
+    def on_click(self, event, x, y, flags, param):
+        global mouseX, mouseY
+        if event == cv2.EVENT_LBUTTONDOWN:
+            mouseX,mouseY = x,y
+            wx, wz = pixel_to_world(mouseX, mouseY)
+            print(f"CAMERA: X = {wx:.2f}m, Z = {wz:.2f}m")
+            wx, wz = calculate_position(wx, wz)
+            print(f"ABSOLUTE: X = {wx:.2f}m, Z = {wz:.2f}m")
+
+class NullDrawing(Graphic):
+    pass
+    

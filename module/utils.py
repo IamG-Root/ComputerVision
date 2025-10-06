@@ -58,5 +58,5 @@ def pixel_to_world(x, y):
     point_on_floor = _intersect_with_floor(ray_origin, dir_world)
     world_x = point_on_floor[0]
     world_z = point_on_floor[2]
-    dist_from_camera = np.sqrt(world_x**2 + world_z**2)
-    return world_x, world_z, dist_from_camera
+    #dist_from_camera = np.sqrt(world_x**2 + world_z**2)
+    return world_x, world_z#, dist_from_camera

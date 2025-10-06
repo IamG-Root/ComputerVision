@@ -31,6 +31,8 @@ ORIENTATION = 1
 
 # Model path to use
 MODEL_PATH = "models/extinguisher_ncnn_model"
+# Confidence of the detected entity
+CONFIDENCE = 0.5
 
 
 # ======= Tracking parameters =======
@@ -41,6 +43,10 @@ MAX_DISTANCE = 50
 MAX_FRAME_DIFF = 10
 # Consecutive frame number to valid a box (Frame)
 MIN_VALID_SEEN_COUNT = 4
+# Max number of entities detected at the same time
+MAX_IDS = 1000
+# Amount of frames to flush and restart entities
+FLUSH_TIME = 1000
 
 
 # ======= MQTT Parameters =======
@@ -50,5 +56,7 @@ MODULE_NAME = "MODULE1"
 
 # MQTT Broker IPv4 Address
 BROKER_IP_ADDRESS = "192.168.1.33"
+# MQTT Broker port
+BROKER_PORT = 1883
 # MQTT Publishing Topic name
 TOPIC = "CV/" + MODULE_NAME
