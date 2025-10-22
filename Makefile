@@ -16,22 +16,22 @@ $(VENV_NAME)/bin/activate:
 install_module: $(VENV_NAME)/bin/activate
 	@echo "\033[1;33mInstalling dependencies...\033[0m"
 	@mkdir -p $(LOGS_DIR)
-	@$(VENV_NAME)/bin/pip install --upgrade pip > $(INSTALL_LOG) 2>&1
-	@$(VENV_NAME)/bin/pip install -r $(MODULE_DEPENDENCIES) >> $(INSTALL_LOG) 2>&1
+	@$(VENV_NAME)/bin/pip install --upgrade pip > $(LOGS_DIR)/$(INSTALL_LOG) 2>&1
+	@$(VENV_NAME)/bin/pip install -r $(MODULE_DEPENDENCIES) >> $(LOGS_DIR)/$(INSTALL_LOG) 2>&1
 	@echo "\033[0;32mModule dependencies installed.\033[0m"
 
 # Server dependencies installation on virtual environment.
 install_server: $(VENV_NAME)/bin/activate
 	@echo "\033[1;33mInstalling dependencies...\033[0m"
 	@mkdir -p $(LOGS_DIR)
-	@$(VENV_NAME)/bin/pip install --upgrade pip > $(INSTALL_LOG) 2>&1
-	@$(VENV_NAME)/bin/pip install -r $(SERVER_DEPENDENCIES) >> $(INSTALL_LOG) 2>&1
+	@$(VENV_NAME)/bin/pip install --upgrade pip > $(LOGS_DIR)/$(INSTALL_LOG) 2>&1
+	@$(VENV_NAME)/bin/pip install -r $(SERVER_DEPENDENCIES) >> $(LOGS_DIR)/$(INSTALL_LOG) 2>&1
 	@echo "\033[0;32mServer dependencies installed.\033[0m"
 
 # Numpy uninstall.
 uninstall_numpy: $(VENV_NAME)/bin/activate
 	@echo "\033[1;33mUninstalling numpy...\033[0m"
-	@$(VENV_NAME)/bin/pip uninstall -y numpy >> $(INSTALL_LOG) 2>&1
+	@$(VENV_NAME)/bin/pip uninstall -y numpy >> $(LOGS_DIR)/$(INSTALL_LOG) 2>&1
 	@echo "\033[0;32mUninstalled numpy.\033[0m"
 
 # Exporting .pt models in ncnn format.
