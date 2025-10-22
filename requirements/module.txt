@@ -1,0 +1,4 @@
+ultralytics==8.3.217
+onnx==1.19.1
+ncnn==1.0.20250916
+paho-mqtt==2.1.0
