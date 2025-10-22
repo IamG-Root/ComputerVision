@@ -20,7 +20,21 @@ CAMERA_PITCH_DEG = 35
 CAMERA_POS_X = 4.5
 # Absolute position y (Meters, m)
 CAMERA_POS_Z = 0.8
+
 # Orientation [1 - 4]
+#
+#
+#     ╔═══════════════╗
+#     ║       3       ║
+#     ║       ˄       ║
+#  ↑  ║               ║
+#  Z  ║ 2<          >4║
+#  ↓  ║               ║
+#     ║       ˅       ║
+#     ║       1       ║
+#   0 ╚═══════════════╝
+#           ← X →             
+
 # 1: x = wx + CAMERA_POS_X | z = wz + CAMERA_POS_Z
 # 2: x = wz + CAMERA_POS_X | z = -wx + CAMERA_POS_Z
 # 3: x = -wx + CAMERA_POS_X | z = -wz + CAMERA_POS_Z
