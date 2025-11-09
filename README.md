@@ -25,14 +25,14 @@ It is divided into two main components:
 
 ### Module
 
-- Launch using `cvenv/bin/python module/main.py` or `source cvenv/bin/activate; python module/main.py` and arguments:
+- Launch using `cvenv/bin/python module/main.py` or `source cvenv/bin/activate; python module/main.py` or `./launcher.sh module` and arguments:
     - `--debug` Print detection log messages;
     - `--draw` Display a window with the camera view.
 - Stop execution with `Ctrl + C`.
 
 ### Server
 
-- Launch using `cvenv/bin/python server/main.py` or `source cvenv/bin/activate; python server/main.py` and arguments:
+- Launch using `cvenv/bin/python server/main.py` or `source cvenv/bin/activate; python server/main.py` or `./launcher.sh server` and arguments:
     - `--debug` Print frame log messages;
     - `--draw` Display a window with the entities displayed in a graphical interface.
 - Stop execution with `Ctrl + C`.
