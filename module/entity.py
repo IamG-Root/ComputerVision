@@ -1,6 +1,6 @@
 import json
 import math
-from utils import pixel_to_world, calculate_position
+from utils import pixel_to_world, relative_to_absolute_position
 
 class Entity:
 	def __init__(self, class_name, box, seen_count = -1, last_seen = -1):
@@ -10,7 +10,7 @@ class Entity:
 		self.center = int((x1 + x2) / 2), int((y1 + y2) / 2)
 		self.ground = (int(x1 + ((x2 - x1)/2)), y2)
 		wx, wz = pixel_to_world(self.ground[0], self.ground[1])
-		self.position = calculate_position(wx, wz)
+		self.position = relative_to_absolute_position(wx, wz)
 		self.seen_count = seen_count
 		self.last_seen = last_seen
 	

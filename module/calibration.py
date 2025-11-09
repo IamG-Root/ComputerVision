@@ -1,7 +1,7 @@
 import cv2
 import config as cfg
 from camera_stream import CameraStream
-from utils import pixel_to_world, calculate_position
+from utils import pixel_to_world, relative_to_absolute_position
 
 def on_click(event, x, y, flags, param):
     global mouseX, mouseY
@@ -9,7 +9,7 @@ def on_click(event, x, y, flags, param):
         mouseX,mouseY = x,y
         wx, wz = pixel_to_world(mouseX, mouseY)
         print(f"CAMERA: X = {wx:.2f}m, Z = {wz:.2f}m")
-        wx, wz = calculate_position(wx, wz)
+        wx, wz = relative_to_absolute_position(wx, wz)
         print(f"ABSOLUTE: X = {wx:.2f}m, Z = {wz:.2f}m")
             
 if __name__ == "__main__":

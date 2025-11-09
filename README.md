@@ -14,6 +14,7 @@ It is divided into two main components:
 - If not done yet, export your models in ncnn format using: `make export_models`;
 - Setup your `config.py` file;
 - Calibrate module using: `module/calibration.py`.
+- Mark the zones to exclude using `module/zones_editor.py`.
 
 ### Server
 
@@ -31,5 +32,7 @@ It is divided into two main components:
 
 ### Server
 
-- Launch using `cvenv/bin/python server/main.py` or `source cvenv/bin/activate; python server/main.py`;
+- Launch using `cvenv/bin/python server/main.py` or `source cvenv/bin/activate; python server/main.py` and arguments:
+    - `--debug` Print frame log messages;
+    - `--draw` Display a window with the entities displayed in a graphical interface.
 - Stop execution with `Ctrl + C`.
