@@ -1,6 +1,6 @@
 import cv2
 import config as cfg
-from utils import pixel_to_world, calculate_position
+from utils import pixel_to_world, relative_to_absolute_position
 
 class Graphic:
     def draw(self, frame, entities):
@@ -37,7 +37,7 @@ class Drawing(Graphic):
             mouseX,mouseY = x,y
             wx, wz = pixel_to_world(mouseX, mouseY)
             print(f"CAMERA: X = {wx:.2f}m, Z = {wz:.2f}m")
-            wx, wz = calculate_position(wx, wz)
+            wx, wz = relative_to_absolute_position(wx, wz)
             print(f"ABSOLUTE: X = {wx:.2f}m, Z = {wz:.2f}m")
 
 class NullDrawing(Graphic):
