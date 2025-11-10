@@ -1,7 +1,27 @@
 import numpy as np
 import config as cfg
+from shapely.geometry import Point, Polygon
 
 ray_origin = (0.0, cfg.CAMERA_H, 0.0)
+
+def is_inside_exclusions(position):
+    for exclusion in cfg.EXCLUSIONS:
+        polygon = Polygon(exclusion)
+        point = Point(position)
+        if polygon.contains(point):
+            return True
+    return False
+
+def import_exclusions():
+    pixel_exclusions = []
+    for exclusion in cfg.EXCLUSIONS:
+        pixel_exclusion = []
+        for point in exclusion:
+            wx, wz = absolute_to_relative_position(point[0], point[1])
+            pixelx, pixely = world_to_pixel(wx, wz)
+            pixel_exclusion.append([pixelx, pixely])
+        pixel_exclusions.append(pixel_exclusion)
+    return pixel_exclusions
 
 def relative_to_absolute_position(wx, wz):
     if cfg.ORIENTATION == 1:

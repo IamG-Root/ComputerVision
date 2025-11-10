@@ -3,6 +3,7 @@ import math
 import config as cfg
 from entity import Entity
 from ultralytics import YOLO
+from utils import is_inside_exclusions
 
 class Inference:
     def __init__(self):
@@ -43,7 +44,7 @@ class Inference:
     def valid(self):
         valid_entities = {
                 id:entity for id, entity in self.entities.items()
-                if entity.seen_count > cfg.MIN_VALID_SEEN_COUNT
+                if entity.seen_count > cfg.MIN_VALID_SEEN_COUNT and not is_inside_exclusions(entity.position)
                 }
         return valid_entities
     

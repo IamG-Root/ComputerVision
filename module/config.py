@@ -41,6 +41,10 @@ CAMERA_POS_Z = 0.8
 # 4: x = -wz + CAMERA_POS_X | z = wx + CAMERA_POS_Z
 ORIENTATION = 1
 
+# Excluded areas represented as polygons with absolute vertex coordinates.
+EXCLUSIONS = []
+
+
 # ======= Model parameters =======
 
 # Model path to use
