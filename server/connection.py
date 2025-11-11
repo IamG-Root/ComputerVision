@@ -25,7 +25,7 @@ class MQTTClient:
 			print(f"[ERROR] Connection failed to: {cfg.BROKER_IP_ADDRESS}")
 	
 	def send(self, content):
-		self.client.publish(cfg.TOPIC, content)
+		self.client.publish(cfg.PUB_TOPIC, content)
 		
 	def stop(self):
 		if self.isConnected:

@@ -1,3 +1,4 @@
+import json
 import time
 import signal
 import config as cfg
@@ -21,6 +22,9 @@ if __name__ == "__main__":
     while True:
         frame_number = (frame_number + 1) % (cfg.FLUSH_TIME)
         entities = processor.compute(frame_number, verbose=args.debug)
-        # To add:
-        # Send entities to MQTT pub topic
+        entities_array = []
+        for _class, _objs in entities.items():
+            for _obj in _objs:
+                entities_array.append(_obj)
+        conn.send(json.dumps(entities_array))
         time.sleep(0.2)

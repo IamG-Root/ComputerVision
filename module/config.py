@@ -9,9 +9,9 @@ FRAME_RES_X = 1024
 # Y Resolution of frame (Pixel)
 FRAME_RES_Y = 768
 # Camera Horizontal FOV angle (Degrees, °)
-FOV_H_DEG = 51.4
+FOV_H_DEG = 53
 # Camera Vertical FOV angle (Degrees, °)
-FOV_V_DEG = 39.4
+FOV_V_DEG = 41
 # Camera height (Meters, m)
 CAMERA_H = 2.545
 # Camera pitch angle (Degrees, °)
