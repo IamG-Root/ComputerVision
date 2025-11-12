@@ -12,7 +12,7 @@ FLUSH_TIME = 100000
 # ======= Visualizer Parameters =======
 
 # Visualizer script name
-VISUALIZER_NAME = "visualizer.py"
+VISUALIZER_NAME = "server/visualizer.py"
 # Width of the window (Pixels)
 WIDTH = 720
 # Height of the window (Pixels)
