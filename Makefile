@@ -34,6 +34,11 @@ uninstall_numpy: $(VENV_NAME)/bin/activate
 	@$(VENV_NAME)/bin/pip uninstall -y numpy >> $(LOGS_DIR)/$(INSTALL_LOG) 2>&1
 	@echo "\033[0;32mUninstalled numpy.\033[0m"
 
+# Giving execution permissions to launcher
+mark_executable:
+	@chmod +x launcher.sh
+	@echo "\033[0;32m'launcher.sh' marked as executable.\033[0m"
+
 # Exporting .pt models in ncnn format.
 export_models: $(VENV_NAME)/bin/activate
 	@echo "\033[1;33mExporting models in ncnn format...\033[0m"
@@ -45,11 +50,11 @@ export_models: $(VENV_NAME)/bin/activate
 	@echo "\033[0;32mAll models exported in ncnn format.\033[0m"
 
 # Module setup.
-module: install_module uninstall_numpy
+module: install_module uninstall_numpy mark_executable
 	@echo "\033[0;32mModule setup completed.\033[0m"
 
 # Server setup.
-server: install_server uninstall_numpy
+server: install_server uninstall_numpy mark_executable
 	@echo "\033[0;32mServer setup completed.\033[0m"
 
 # Removing virtual environment.

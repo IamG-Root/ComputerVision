@@ -9,10 +9,25 @@ MAX_ID = 999
 # Maximum number of frames. After this restart from 0.
 FLUSH_TIME = 100000
 
+# ======= Visualizer Parameters =======
+
+# Visualizer script name
+VISUALIZER_NAME = "visualizer.py"
+# Width of the window (Pixels)
+WIDTH = 720
+# Height of the window (Pixels)
+HEIGHT = 720
+# Padding of the rectangle of the window (Pixels)
+PADDING = 20
+# Width of the dot representing an entity
+DOT_WIDTH = 5
+
 # ======= MQTT Parameters =======
 
-# Module name
-MODULE_NAME = "SERVER"
+# Server Module name
+SERVER_MODULE_NAME = "SERVER"
+# Visualizer Module name
+VISUALIZER_MODULE_NAME = "VISUALIZER"
 
 # MQTT Broker IPv4 Address
 BROKER_IP_ADDRESS = "192.168.1.33"
