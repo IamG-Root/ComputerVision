@@ -10,21 +10,16 @@ class MQTTClient:
 		self.client = mqtt.Client(client_id=cfg.MODULE_NAME, callback_api_version=CallbackAPIVersion.VERSION2)
 		self.client.on_connect = self.on_connect
 		self.client.on_disconnect = self.on_disconnect
+		self.client.reconnect_delay_set(min_delay=2, max_delay=30)
 		self.try_connection()
 	
 	def try_connection(self):
-		attempt = 0
-		while not self.isConnected:
-			attempt += 1
-			try:
-				print(f"[...] Connection to broker attempt n.{attempt}...")
-				self.client.connect(cfg.BROKER_IP_ADDRESS, cfg.BROKER_PORT, keepalive=60)
-				self.client.loop_start()
-				time.sleep(1)
-				if self.isConnected:
-					break
-			except Exception as e:
-				print(f"[ERROR] Error while attempting to connect to broker: {e}")
+		try:
+			print(f"[...] Connection to broker...")
+			self.client.connect(cfg.BROKER_IP_ADDRESS, cfg.BROKER_PORT, keepalive=60)
+			self.client.loop_start()
+		except Exception as e:
+			print(f"[ERROR] Error while attempting to connect to broker: {e}")
 
 	def on_connect(self, client, userdata, flags, reason_code, properties):
 		if reason_code == "Success":
@@ -34,6 +29,8 @@ class MQTTClient:
 			print(f"[ERROR] Connection failed to: {cfg.BROKER_IP_ADDRESS}")
 	
 	def on_disconnect(self, client, userdata, flags, reason_code, properties):
+		if self.isConnected:
+			self.isConnected = False
 		if not self.should_stop:
 			self.try_connection()
 	
