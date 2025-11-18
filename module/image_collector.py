@@ -27,7 +27,7 @@ if __name__ == "__main__":
     signal.signal(signal.SIGINT, lambda signum, frame: on_quit())
     cam = CameraStream()
 
-    if exists("Collections"):
+    if not exists("Collections"):
          mkdir("Collections")
 
     while True:
@@ -35,5 +35,5 @@ if __name__ == "__main__":
         frame = cv2.resize(frame, (640, 640))
         ts = int(time.time())
         cv2.imwrite(f"Collections/{ts}.jpg", frame)
-        print("Saved {ts}.jpg")
+        print(f"Saved {ts}.jpg")
         time.sleep(capture_delta_time)
