@@ -36,3 +36,9 @@ It is divided into two main components:
     - `--debug` Print frame log messages;
     - `--draw` Display a window with the entities displayed in a graphical interface.
 - Stop execution with `Ctrl + C`.
+
+## Setup start on boot
+
+- Create a new crontab using `sudo crontab -e`.
+- Add `@reboot` + `bash` + `path-to-repository/launcher.sh` + argument `module` or `server`.
+- Note that `--draw` arguments will not work beacause crontab starts before the graphical server.
