@@ -2,14 +2,22 @@ import cv2
 import sys
 import time
 import signal
+import subprocess
 from os import mkdir
 from os.path import exists
 from camera_stream import CameraStream
 
+COLLECTION_FOLDER = "Collection"
+
 def on_quit():
-	print("Closing...")
-	cam.stop()
-	exit(0)
+     print("Closing...")
+     cam.stop()
+     try:
+         subprocess.run(["zip", "-r", "-0", f"{COLLECTION_FOLDER}.zip", COLLECTION_FOLDER], check=True)
+         print(f"Images exported in {COLLECTION_FOLDER}.zip")
+     except subprocess.CalledProcessError as e:
+         print("Error during compression: ", e)
+     exit(0)
 
 if __name__ == "__main__":
 
@@ -27,13 +35,13 @@ if __name__ == "__main__":
     signal.signal(signal.SIGINT, lambda signum, frame: on_quit())
     cam = CameraStream()
 
-    if not exists("Collections"):
-         mkdir("Collections")
+    if not exists(COLLECTION_FOLDER):
+         mkdir(COLLECTION_FOLDER)
 
     while True:
         frame = cam.capture_frame()
         frame = cv2.resize(frame, (640, 640))
         ts = int(time.time())
-        cv2.imwrite(f"Collections/{ts}.jpg", frame)
+        cv2.imwrite(f"{COLLECTION_FOLDER}/{ts}.jpg", frame)
         print(f"Saved {ts}.jpg")
         time.sleep(capture_delta_time)

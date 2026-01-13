@@ -13,7 +13,7 @@ It is divided into two main components:
 - Install virtual environment using `make module`;
 - If not done yet, export your models in ncnn format using: `make export_models`;
 - Setup your `config.py` file;
-- Calibrate module using: `module/calibration.py`.
+- Calibrate module using: `module/calibration.py`;
 - Mark the zones to exclude using `module/zones_editor.py`.
 
 ### Server
@@ -22,6 +22,13 @@ It is divided into two main components:
 - Setup your `server/config.py` file.
 
 ## Usage
+
+### Image Collection for Datasets
+
+- Launch using `cvenv/bin/python module/image_collector.py` + delta time between captures in seconds as argument (ex `2`, `5` etc);
+- Images will be stored by default in `Collection` folder;
+- Stop execution with `Ctrl + C`;
+- Images will be exported by default in `Collection.zip` archive.
 
 ### Module
 
@@ -39,6 +46,6 @@ It is divided into two main components:
 
 ## Setup start on boot
 
-- Create a new crontab using `sudo crontab -e`.
-- Add `@reboot` + `bash` + `path-to-repository/launcher.sh` + argument `module` or `server`.
+- Create a new crontab using `sudo crontab -e`;
+- Add `@reboot` + `bash` + `path-to-repository/launcher.sh` + argument `module` or `server`;
 - Note that `--draw` arguments will not work beacause crontab starts before the graphical server.
