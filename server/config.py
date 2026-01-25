@@ -24,16 +24,27 @@ DOT_WIDTH = 5
 
 # ======= MQTT Parameters =======
 
-# Server Module name
+# Local Server Module name
 SERVER_MODULE_NAME = "SERVER"
-# Visualizer Module name
+# Local Visualizer Module name
 VISUALIZER_MODULE_NAME = "VISUALIZER"
+# FIWARE Module name
+FIWARE_MODULE_NAME = "FIWARE"
 
-# MQTT Broker IPv4 Address
-BROKER_IP_ADDRESS = "192.168.1.33"
-# MQTT Broker Port
-BROKER_PORT = 1883
-# MQTT Publish Topic name
-PUB_TOPIC = "POS"
-# MQTT Subscription Topic name
-SUB_TOPIC = "CV/#"
+# Local MQTT Broker IPv4 Address
+LOCAL_BROKER_IP_ADDRESS = "localhost"
+# Local MQTT Broker Port
+LOCAL_BROKER_PORT = 1883
+# Local MQTT Publish Topic name
+LOCAL_PUB_TOPIC = "POS"
+# Local MQTT Subscription Topic name
+LOCAL_SUB_TOPIC = "CV/#"
+
+# Fiware MQTT Broker IPv4 Address
+FIWARE_BROKER_IP_ADDRESS = "localhost"
+# Fiware MQTT Broker Port
+FIWARE_BROKER_PORT = 1883
+# Fiware MQTT Publish Topic name
+FIWARE_PUB_TOPIC = "/secret_key_cam/cam_1/attrs"
+# Fiware MQTT Subscription Topic name
+FIWARE_SUB_TOPIC = "$SYS/#"

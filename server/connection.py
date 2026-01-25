@@ -2,11 +2,20 @@ import config as cfg
 import paho.mqtt.client as mqtt
 from paho.mqtt.client import CallbackAPIVersion
 
+class ConnectionInfo:
+	def __init__(self, client_id, broker_ip, broker_port, sub_topic, pub_topic):
+		self.client_id = client_id
+		self.broker_ip = broker_ip
+		self.broker_port = broker_port
+		self.sub_topic = sub_topic
+		self.pub_topic = pub_topic
+
 class MQTTClient:
-	def __init__(self, name = None, on_message = None):
+	def __init__(self, info:ConnectionInfo, on_message = None):
 		self.isConnected = False
 		self.should_stop = False
-		self.client = mqtt.Client(client_id=name, callback_api_version=CallbackAPIVersion.VERSION2)
+		self.info = info
+		self.client = mqtt.Client(client_id=info.client_id, callback_api_version=CallbackAPIVersion.VERSION2)
 		self.client.on_connect = self.on_connect
 		self.client.on_disconnect = self.on_disconnect
 		self.client.on_message = on_message
@@ -16,23 +25,19 @@ class MQTTClient:
 	def try_connection(self):
 		try:
 			print("[...] Connection to broker...")
-			self.client.connect(cfg.BROKER_IP_ADDRESS, cfg.BROKER_PORT, keepalive=60)
+			self.client.connect(self.info.broker_ip, self.info.broker_port, keepalive=60)
 			self.client.loop_start()
 		except Exception as e:
 			print(f"[ERROR] Error while attempting to connect to broker: {e}")
 
 	def on_connect(self, client, userdata, flags, reason_code, properties):
 		if reason_code == "Success":
-			print(f"[OK] Connected to: {cfg.BROKER_IP_ADDRESS}:{cfg.BROKER_PORT}")
+			print(f"[OK] Connected to: {self.info.broker_ip}:{self.info.broker_port}")
 			self.isConnected = True
-			if self.client._client_id.decode() == cfg.VISUALIZER_MODULE_NAME:
-				topic = cfg.PUB_TOPIC
-			else:
-				topic = cfg.SUB_TOPIC
-			self.client.subscribe(topic)
-			print(f"[OK] Subscribed to: '{topic}'")
+			self.client.subscribe(self.info.sub_topic)
+			print(f"[OK] Subscribed to: '{self.info.sub_topic}'")
 		else:
-			print(f"[ERROR] Connection failed to: {cfg.BROKER_IP_ADDRESS}")
+			print(f"[ERROR] Connection failed to: {self.info.broker_ip}")
 	
 	def on_disconnect(self, client, userdata, flags, reason_code, properties):
 		if self.isConnected:
@@ -41,7 +46,7 @@ class MQTTClient:
 			self.try_connection()
 	
 	def send(self, content):
-		self.client.publish(cfg.PUB_TOPIC, content)
+		self.client.publish(self.info.pub_topic, content)
 		
 	def stop(self):
 		if self.isConnected:

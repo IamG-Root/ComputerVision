@@ -1,6 +1,7 @@
 
 import numpy as np
 from munkres import Munkres
+from datetime import datetime
 
 def distance(p1, p2):
     return np.linalg.norm(np.array(p1) - np.array(p2))
@@ -38,3 +39,7 @@ def mean_position(pos1, pos2):
     x_med = (pos1[0] + pos2[0]) / 2
     z_med = (pos1[1] + pos2[1]) / 2
     return((round(x_med, 2), round(z_med, 2)))
+
+def unix_to_iso(timestamp):
+    dt_obj = datetime.fromtimestamp(timestamp)
+    return dt_obj.isoformat()

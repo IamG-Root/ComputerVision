@@ -1,7 +1,7 @@
 import json
 import config as cfg
 from tkinter import *
-from connection import MQTTClient
+from connection import MQTTClient, ConnectionInfo
 
 def update_canvas(canvas):
     def on_message(client, userdata, msg):
@@ -31,9 +31,16 @@ def init_window():
 def main():
     window = init_window()
     canvas = init_canvas(window)
-    conn = MQTTClient(name=cfg.VISUALIZER_MODULE_NAME, on_message=update_canvas(canvas))
+    infoLocalConnection = ConnectionInfo(
+        client_id=cfg.VISUALIZER_MODULE_NAME,
+        broker_ip=cfg.LOCAL_BROKER_IP_ADDRESS,
+        broker_port=cfg.LOCAL_BROKER_PORT,
+        sub_topic=cfg.LOCAL_PUB_TOPIC,
+        pub_topic="null"
+    )
+    local_conn = MQTTClient(info=infoLocalConnection, on_message=update_canvas(canvas))
     window.mainloop()
-    conn.stop()
+    local_conn.stop()
 
 if __name__ == "__main__":
     main()
