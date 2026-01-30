@@ -35,7 +35,7 @@ class MQTTClient:
 			self.try_connection()
 	
 	def send(self, content):
-		self.client.publish(cfg.TOPIC, content)
+		self.client.publish(cfg.TOPIC, content, qos=0, retain=False)
 		
 	def stop(self):
 		if self.isConnected:
