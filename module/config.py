@@ -70,10 +70,10 @@ FLUSH_TIME = 1000
 # ======= MQTT Parameters =======
 
 # Module name
-MODULE_NAME = "MODULE1"
+MODULE_NAME = "MODULEX"
 
 # MQTT Broker IPv4 Address
-BROKER_IP_ADDRESS = "192.168.1.33"
+BROKER_IP_ADDRESS = "10.1.64.130"
 # MQTT Broker port
 BROKER_PORT = 1883
 # MQTT Publishing Topic name

@@ -12,7 +12,7 @@ It is divided into two main components:
 
 - Install virtual environment using `make module`;
 - If not done yet, export your models in ncnn format using: `make export_models`;
-- Setup your `config.py` file;
+- Setup your `module/config.py` file manually or using the `module/editor_wizard.py` script;
 - Calibrate module using: `module/calibration.py`;
 - Mark the zones to exclude using `module/zones_editor.py`.
 
