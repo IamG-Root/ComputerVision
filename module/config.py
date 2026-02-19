@@ -48,7 +48,7 @@ EXCLUSIONS = []
 # ======= Model parameters =======
 
 # Model path to use
-MODEL_PATH = "models/extinguisher_ncnn_model"
+MODEL_PATH = "models/swift_ncnn_model"
 # Confidence of the detected entity
 CONFIDENCE = 0.5
 
