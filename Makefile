@@ -50,11 +50,11 @@ export_models: $(VENV_NAME)/bin/activate
 	@echo "\033[0;32mAll models exported in ncnn format.\033[0m"
 
 # Module setup.
-module: install_module mark_executable
+module: install_module uninstall_numpy mark_executable
 	@echo "\033[0;32mModule setup completed.\033[0m"
 
 # Server setup.
-server: install_server mark_executable
+server: install_server uninstall_numpy mark_executable
 	@echo "\033[0;32mServer setup completed.\033[0m"
 
 # Removing virtual environment.
