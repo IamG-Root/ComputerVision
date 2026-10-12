@@ -115,14 +115,14 @@ def world_to_pixel(X, Z):
     p_world = np.array([X, 0.0, Z])
     dir_world = p_world - ray_origin
     if np.linalg.norm(dir_world) == 0:
-        return np.nan, np.nan, False
+        return np.nan, np.nan
 
     # Porta nel sistema camera (inversa della rotazione di pitch)
     dir_cam = rotate_vector_world_to_cam(_norm(dir_world), cfg.CAMERA_PITCH_DEG)
 
     # Se z_cam <= 0 il punto è dietro il piano immagine → non visibile
     if dir_cam[2] <= 0:
-        return np.nan, np.nan, False
+        return np.nan, np.nan
 
     # Angoli rispetto all'asse ottico (coerenti con la convenzione usata)
     theta_x = np.arctan2(dir_cam[0], dir_cam[2])     # x vs z

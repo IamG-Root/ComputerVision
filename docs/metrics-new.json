@@ -1,0 +1,11 @@
+{
+  "true_positives": 26,
+  "false_positives": 4,
+  "false_negatives": 4,
+  "id_switches": 0,
+  "duplicate_detections": 0,
+  "precision": 0.8666666666666667,
+  "recall": 0.8666666666666667,
+  "idf1": 0.8666666666666667,
+  "mean_position_error_m": 0.0363846153846154
+}

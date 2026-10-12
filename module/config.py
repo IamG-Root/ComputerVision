@@ -78,3 +78,8 @@ BROKER_IP_ADDRESS = "10.1.64.130"
 BROKER_PORT = 1883
 # MQTT Publishing Topic name
 TOPIC = "CV/" + MODULE_NAME
+
+# Enable only after verifying NTP/Chrony on ALL devices; false uses receipt time.
+CLOCK_SYNCHRONIZED = False
+# Set 1 only during rollback to an old server. Server v2 accepts both versions.
+PROTOCOL_VERSION = 2

@@ -1,0 +1,61 @@
+# File della modifica
+
+## Modificati
+
+- `Makefile`
+- `README.md`
+- `launcher.sh`
+- `module/camera_stream.py`
+- `module/config.py`
+- `module/connection.py`
+- `module/debug.py`
+- `module/drawing.py`
+- `module/inference.py`
+- `module/main.py`
+- `module/utils.py`
+- `requirements/module.txt`
+- `requirements/server.txt`
+- `server/args.py`
+- `server/config.py`
+- `server/connection.py`
+- `server/main.py`
+- `server/processing.py`
+- `server/visualizer.py`
+
+## Nuovi
+
+- `.gitignore`
+- `docs/FILE_MODIFICATI.md`
+- `docs/IMPLEMENTAZIONE.md`
+- `docs/PR.md`
+- `docs/benchmark.json`
+- `docs/metrics-baseline.json`
+- `docs/metrics-new.json`
+- `docs/replay-baseline-summary.json`
+- `docs/replay-baseline.jsonl`
+- `docs/replay-new-summary.json`
+- `docs/replay-new.jsonl`
+- `docs/tests.txt`
+- `module/telemetry.py`
+- `server/legacy_output.py`
+- `tests/baseline/config.py`
+- `tests/baseline/debug.py`
+- `tests/baseline/main.py`
+- `tests/baseline/processing.py`
+- `tests/baseline/utils.py`
+- `tests/capture_contract.py`
+- `tests/fixtures/contract.json`
+- `tests/fixtures/replay.jsonl`
+- `tests/fixtures/truth.jsonl`
+- `tests/test_runtime.py`
+- `tests/test_system.py`
+- `tools/benchmark.py`
+- `tools/metrics.py`
+- `tools/replay.py`
+- `tracking/__init__.py`
+- `tracking/assignment.py`
+- `tracking/global_tracker.py`
+- `tracking/local_tracker.py`
+- `tracking/mqtt.py`
+- `tracking/protocol.py`
+- `tracking/visibility.py`

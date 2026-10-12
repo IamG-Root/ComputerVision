@@ -48,3 +48,19 @@ FIWARE_BROKER_PORT = 1883
 FIWARE_PUB_TOPIC = "/secret_key_cam/cam_1/attrs"
 # Fiware MQTT Subscription Topic name
 FIWARE_SUB_TOPIC = "$SYS/#"
+
+# Internal MC-MOT settings (seconds, meters); public MQTT settings above unchanged.
+TRACK_POLICY = dict(confirm_hits=2, publish_age=0.6, lost_age=1.5, delete_age=4.0,
+                    max_distance=1.2, max_speed=3.0, measurement_sigma=0.15,
+                    acceleration=1.5, gate=9.21)
+# Keys must match model class names exactly. Example: {"pallet": {"acceleration": 0.3}}
+CLASS_POLICIES = {}
+REORDER_WINDOW = 0.08
+FUSION_WINDOW = 0.06
+MAX_SNAPSHOT_AGE = 1.0
+MAX_PENDING_SNAPSHOTS = 256
+MAX_PAYLOAD_BYTES = 262144
+MAX_ENTITIES_PER_SNAPSHOT = 256
+MAX_MODULES = 128
+# Optional surveyed visibility polygons; empty means no geometry restriction.
+CAMERA_VISIBILITY = {}

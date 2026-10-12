@@ -1,4 +1,8 @@
 import cv2
+import os
+import sys
+import subprocess
+import logging
 import config as cfg
 from utils import import_exclusions, pixel_to_world, relative_to_absolute_position
 
@@ -12,28 +16,63 @@ class Graphic:
 
 class Drawing(Graphic):
     def __init__(self):
-        cv2.namedWindow(cfg.MODULE_NAME)
-        cv2.setMouseCallback(cfg.MODULE_NAME, self.on_click)
-        self.exclusions = import_exclusions()
+        self.active = False
+        if sys.platform.startswith('linux') and not (os.environ.get('DISPLAY') or os.environ.get('WAYLAND_DISPLAY')):
+            logging.warning('--draw unavailable: no graphical display; tracking continues')
+            return
+        # Qt can abort rather than raise when a display is unusable. Probe in a child.
+        try:
+            probe = subprocess.run([sys.executable, '-c',
+                'import cv2; cv2.namedWindow("Display check"); cv2.destroyAllWindows()'],
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=5)
+            if probe.returncode:
+                raise RuntimeError('OpenCV display probe failed')
+            cv2.namedWindow(cfg.MODULE_NAME)
+            cv2.setMouseCallback(cfg.MODULE_NAME, self.on_click)
+            self.exclusions = import_exclusions()
+            self.active = True
+        except (Exception, cv2.error) as exc:
+            logging.warning('--draw unavailable: %s; tracking continues', exc)
 
     def draw(self, frame, entities):
-        for id, entity in entities.items():
-            x1, y1, x2, y2 = map(int, entity.box)
-            cx, cy = entity.center
-            cv2.rectangle(frame, (x1, y1), (x2, y2), (0,255,0), 2)
-            class_name = entity.class_name
-            cv2.putText(frame, f"CLASS: {class_name}", (x1, y1 - 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
-            cv2.putText(frame, f"ID: {id}", (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
-        for exclusion in self.exclusions:
-            self.draw_polygon(frame, exclusion, (0, 0, 255))
-        cv2.imshow(cfg.MODULE_NAME, frame)
+        if not self.active:
+            return
+        frame = frame.copy()
+        try:
+            for ident, entity in entities.items():
+                x1,y1,x2,y2 = map(int,entity.box)
+                state = getattr(entity, 'track_state', 'observed')
+                color = (0,255,0) if state == 'observed' else (0,165,255)
+                cv2.rectangle(frame,(x1,y1),(x2,y2),color,2)
+                cv2.circle(frame,tuple(map(int,entity.ground)),4,color,-1)
+                label = f'{ident} {entity.class_name} {getattr(entity,"confidence",0):.2f} {state}'
+                coords = f'X={entity.position[0]:.2f} Z={entity.position[1]:.2f}'
+                cv2.putText(frame,label,(x1,max(20,y1-25)),cv2.FONT_HERSHEY_SIMPLEX,.5,color,1)
+                cv2.putText(frame,coords,(x1,max(40,y1-5)),cv2.FONT_HERSHEY_SIMPLEX,.5,color,1)
+            for exclusion in self.exclusions:
+                self.draw_polygon(frame,exclusion,(0,0,255))
+            cv2.imshow(cfg.MODULE_NAME,frame)
+        except cv2.error:
+            logging.warning('Diagnostic window unavailable; tracking continues')
+            self.stop()
 
     def exit(self):
-        return (cv2.waitKey(1) & 0xFF == ord('q'))
+        if self.active:
+            try:
+                if cv2.waitKey(1) & 0xFF == ord('q') or cv2.getWindowProperty(cfg.MODULE_NAME,cv2.WND_PROP_VISIBLE) < 1:
+                    self.stop()
+            except cv2.error:
+                self.stop()
+        return False
 
     def stop(self):
-        cv2.destroyAllWindows()
-    
+        if self.active:
+            self.active = False
+            try:
+                cv2.destroyWindow(cfg.MODULE_NAME)
+            except cv2.error:
+                pass
+
     def on_click(self, event, x, y, flags, param):
         global mouseX, mouseY
         if event == cv2.EVENT_LBUTTONDOWN:

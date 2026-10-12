@@ -1,0 +1,41 @@
+{
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "python": "3.12.14",
+  "numpy": "2.3.5",
+  "kind": "synthetic development-host CPU only",
+  "results": [
+    {
+      "objects": 1,
+      "cameras": 8,
+      "frames": 40,
+      "mean_ms": 0.5725737999938474,
+      "p95_ms": 0.629672049990404,
+      "max_ms": 1.0707059999504054,
+      "cpu_seconds": 0.253636618,
+      "wall_seconds": 0.023166307999986202,
+      "peak_process_rss_kib": 24196
+    },
+    {
+      "objects": 10,
+      "cameras": 8,
+      "frames": 40,
+      "mean_ms": 6.232042649997993,
+      "p95_ms": 7.2388287500643855,
+      "max_ms": 8.078619999992043,
+      "cpu_seconds": 0.43059338000000014,
+      "wall_seconds": 0.25075429200001054,
+      "peak_process_rss_kib": 24324
+    },
+    {
+      "objects": 25,
+      "cameras": 8,
+      "frames": 40,
+      "mean_ms": 27.364496399988525,
+      "p95_ms": 30.640466450068967,
+      "max_ms": 39.33593599992946,
+      "cpu_seconds": 1.097614996,
+      "wall_seconds": 1.0985426580000421,
+      "peak_process_rss_kib": 24836
+    }
+  ]
+}

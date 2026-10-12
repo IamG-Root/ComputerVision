@@ -1,5 +1,11 @@
 import json
 import math
+import time
+import logging
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from tracking.local_tracker import LocalTracker
 import config as cfg
 from entity import Entity
 from ultralytics import YOLO
@@ -8,6 +14,7 @@ from utils import is_inside_exclusions
 class Inference:
     def __init__(self):
         self.model = YOLO(cfg.MODEL_PATH, task="detect")
+        self.tracker = LocalTracker(cfg.MAX_DISTANCE, cfg.MAX_FRAME_DIFF, cfg.MIN_VALID_SEEN_COUNT+1)
         self.next_id = 0
         self.entities = {}
     
@@ -16,35 +23,21 @@ class Inference:
         for box in results.boxes:
             class_name = self.model.names[int(box.cls[0])]
             x1, y1, x2, y2 = box.xyxy[0].cpu().numpy().astype(int)
-            detections.append(Entity(class_name, (x1, y1, x2, y2)))
+            entity = Entity(class_name, (x1, y1, x2, y2))
+            entity.confidence = float(box.conf[0])
+            if all(math.isfinite(v) for v in entity.position):
+                detections.append(entity)
+            else:
+                logging.warning("Non-finite projection rejected")
         return detections
 
     def track(self, detections, frame_number):
-        updated_entities = self.entities.copy()
-        for detection in detections:
-            assigned = False
-            for id, entity in self.entities.items():
-                if detection.class_name == entity.class_name:
-                    distance = Entity.distance(detection, entity)
-                    if distance < cfg.MAX_DISTANCE:
-                        updated_entities[id] = Entity(detection.class_name, detection.box, (entity.seen_count + 1) if entity.seen_count <= cfg.MIN_VALID_SEEN_COUNT else entity.seen_count, frame_number)
-                        assigned = True
-                        break
-            if not assigned:
-                updated_entities[self.next_id] = Entity(detection.class_name, detection.box, 1, frame_number)
-                self.next_id = self.next_id + 1 if self.next_id < cfg.MAX_IDS else 0
-        
-        updated_entities = {
-                id:entity for id, entity in updated_entities.items()
-                if frame_number - entity.last_seen < cfg.MAX_FRAME_DIFF
-                }
-        return updated_entities
-        
+        return self.tracker.update(detections, frame_number)
 
     def valid(self):
         valid_entities = {
                 id:entity for id, entity in self.entities.items()
-                if entity.seen_count > cfg.MIN_VALID_SEEN_COUNT and not is_inside_exclusions(entity.position)
+                if getattr(entity, "confirmed", False) and entity.track_state == "observed" and not is_inside_exclusions(entity.position)
                 }
         return valid_entities
     
@@ -56,7 +49,9 @@ class Inference:
         return(json.dumps(json_data))
         
     def extract_entities(self, frame, frame_number):
+        start = time.monotonic()
         results = self.model.predict(source=frame, conf=cfg.CONFIDENCE, verbose=False)[0]
         detections = self.detect(results)
+        logging.debug("Inference seconds=%.3f detections=%s", time.monotonic()-start, len(detections))
         self.entities = self.track(detections, frame_number)
         return self.valid()

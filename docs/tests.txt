@@ -1,0 +1,149 @@
+test_release_on_capture_error (test_runtime.Camera.test_release_on_capture_error) ... ok
+test_sensor_timestamp_and_release (test_runtime.Camera.test_sensor_timestamp_and_release) ... ok
+test_disconnect_does_not_recurse (test_runtime.Connection.test_disconnect_does_not_recurse) ... MQTT disconnected: 1; automatic reconnect
+ok
+test_initial_failure_reconnect_async (test_runtime.Connection.test_initial_failure_reconnect_async) ... ok
+test_offline_drop (test_runtime.Connection.test_offline_drop) ... ok
+test_qos_and_retain (test_runtime.Connection.test_qos_and_retain) ... ok
+test_all_flags (test_runtime.Debug.test_all_flags) ... ok
+test_broken_display (test_runtime.Debug.test_broken_display) ... WARNING:root:--draw unavailable: OpenCV display probe failed; tracking continues
+ok
+test_close_window (test_runtime.Debug.test_close_window) ... ok
+test_frame_unchanged (test_runtime.Debug.test_frame_unchanged) ... ok
+test_headless (test_runtime.Debug.test_headless) ... WARNING:root:--draw unavailable: no graphical display; tracking continues
+ok
+test_logging (test_runtime.Debug.test_logging) ... ok
+test_camera_recovery (test_runtime.EdgeLoop.test_camera_recovery) ... ERROR:root:Camera unavailable; retrying
+Traceback (most recent call last):
+  File "/workspace/scratch/a79ab67da0c9/ComputerVision/module/main.py", line 38, in main
+    frame = cam.capture_frame()
+            ^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1202, in _execute_mock_call
+    raise result
+RuntimeError: camera unavailable
+ok
+test_debug_equivalence (test_runtime.EdgeLoop.test_debug_equivalence) ... ok
+test_no_publisher_in_shadow (test_runtime.ServerShadow.test_no_publisher_in_shadow) ... ok
+test_close_people_two_cameras (test_system.AdditionalScenarios.test_close_people_two_cameras) ... ok
+test_global_crossing (test_system.AdditionalScenarios.test_global_crossing) ... ok
+test_metrics (test_system.AdditionalScenarios.test_metrics) ... ok
+test_non_overlapping (test_system.AdditionalScenarios.test_non_overlapping) ... ok
+test_old_observation_not_real (test_system.AdditionalScenarios.test_old_observation_not_real) ... ok
+test_slow_edge_rejected (test_system.AdditionalScenarios.test_slow_edge_rejected) ... ok
+test_empty (test_system.Assignment.test_empty) ... ok
+test_gating_before_optimization (test_system.Assignment.test_gating_before_optimization) ... ok
+test_invalid (test_system.Assignment.test_invalid) ... ok
+test_unmatched (test_system.Assignment.test_unmatched) ... ok
+test_exact_fixtures (test_system.Contract.test_exact_fixtures) ... ok
+test_publisher_cardinality_unchanged (test_system.Contract.test_publisher_cardinality_unchanged) ... ok
+test_serializers_ast_unchanged (test_system.Contract.test_serializers_ast_unchanged) ... ok
+test_footprint (test_system.Geometry.test_footprint) ... ok
+test_horizon (test_system.Geometry.test_horizon) ... ok
+test_no_map (test_system.Geometry.test_no_map) ... ok
+test_soft_map (test_system.Geometry.test_soft_map) ... ok
+test_class_policy (test_system.Global.test_class_policy) ... ok
+test_different_classes (test_system.Global.test_different_classes) ... ok
+test_eight_cameras (test_system.Global.test_eight_cameras) ... ok
+test_handoff (test_system.Global.test_handoff) ... ok
+test_late_never_refreshes (test_system.Global.test_late_never_refreshes) ... ok
+test_lifecycle (test_system.Global.test_lifecycle) ... ok
+test_multiple_objects (test_system.Global.test_multiple_objects) ... ok
+test_no_id_collision (test_system.Global.test_no_id_collision) ... WARNING:tracking.global_tracker:Global ID capacity reached; birth suppressed
+ok
+test_no_repeated_camera_confirmation (test_system.Global.test_no_repeated_camera_confirmation) ... ok
+test_occlusion_return (test_system.Global.test_occlusion_return) ... ok
+test_one_camera (test_system.Global.test_one_camera) ... ok
+test_outlier (test_system.Global.test_outlier) ... ok
+test_permutation (test_system.Global.test_permutation) ... ok
+test_same_camera_constraint (test_system.Global.test_same_camera_constraint) ... ok
+test_static (test_system.Global.test_static) ... ok
+test_three_cameras (test_system.Global.test_three_cameras) ... ok
+test_two_cameras (test_system.Global.test_two_cameras) ... ok
+test_clock_skew (test_system.Ingress.test_clock_skew) ... WARNING:processing:Rejected MQTT snapshot: Stale snapshot or clock skew
+ok
+test_confirm_and_stale (test_system.Ingress.test_confirm_and_stale) ... ok
+test_duplicate (test_system.Ingress.test_duplicate) ... WARNING:processing:Rejected MQTT snapshot: Duplicate, retired session or out-of-order frame
+ok
+test_empty_snapshot (test_system.Ingress.test_empty_snapshot) ... ok
+test_legacy_consumed_once (test_system.Ingress.test_legacy_consumed_once) ... ok
+test_malformed (test_system.Ingress.test_malformed) ... WARNING:processing:Rejected MQTT snapshot: Invalid version or module/topic mismatch
+WARNING:processing:Rejected MQTT snapshot: Invalid version or module/topic mismatch
+WARNING:processing:Rejected MQTT snapshot: Invalid version or module/topic mismatch
+WARNING:processing:Rejected MQTT snapshot: Invalid or duplicated local ID
+WARNING:processing:Rejected MQTT snapshot: Invalid entity list
+ok
+test_nan (test_system.Ingress.test_nan) ... WARNING:processing:Rejected MQTT snapshot: Expected finite numeric value
+ok
+test_no_freshening_when_idle (test_system.Ingress.test_no_freshening_when_idle) ... ok
+test_out_of_order (test_system.Ingress.test_out_of_order) ... WARNING:processing:Rejected MQTT snapshot: Duplicate, retired session or out-of-order frame
+ok
+test_predicted (test_system.Ingress.test_predicted) ... ok
+test_queue_bound (test_system.Ingress.test_queue_bound) ... WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+WARNING:processing:Input queue full; oldest snapshot dropped
+ok
+test_restart_old_session (test_system.Ingress.test_restart_old_session) ... WARNING:processing:Rejected MQTT snapshot: Duplicate, retired session or out-of-order frame
+ok
+test_retained (test_system.Ingress.test_retained) ... WARNING:processing:Rejected MQTT snapshot: Unexpected topic or retained snapshot
+ok
+test_wrong_topic (test_system.Ingress.test_wrong_topic) ... WARNING:processing:Rejected MQTT snapshot: Invalid version or module/topic mismatch
+ok
+test_confirmation_requires_consecutive (test_system.Local.test_confirmation_requires_consecutive) ... ok
+test_crossing (test_system.Local.test_crossing) ... ok
+test_delete (test_system.Local.test_delete) ... ok
+test_no_local_id_reuse (test_system.Local.test_no_local_id_reuse) ... ok
+test_occlusion_not_observed (test_system.Local.test_occlusion_not_observed) ... ok
+test_one_to_one (test_system.Local.test_one_to_one) ... ok
+test_single (test_system.Local.test_single) ... ok
+
+----------------------------------------------------------------------
+Ran 70 tests in 0.103s
+
+OK

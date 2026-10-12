@@ -49,3 +49,17 @@ It is divided into two main components:
 - Create a new crontab using `sudo crontab -e`;
 - Add `@reboot` + `bash` + `path-to-repository/launcher.sh` + argument `module` or `server`;
 - Note that `--draw` arguments will not work beacause crontab starts before the graphical server.
+## MC-MOT refactoring
+
+See [the implementation report and deployment guide](docs/IMPLEMENTAZIONE.md).
+Public Unity/FIWARE payloads remain unchanged. Upgrade the server before v2 edges.
+
+```bash
+python -m unittest discover -s tests -v
+python server/main.py --shadow --debug
+python module/main.py --draw --debug
+```
+
+The default tracking thresholds require validation against actual Raspberry Pi
+inference latency and installation telemetry before production use. Hardware and
+consumer integration tests have not been performed in the development environment.
