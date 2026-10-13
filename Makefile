@@ -57,6 +57,12 @@ module: install_module uninstall_numpy mark_executable
 server: install_server uninstall_numpy mark_executable
 	@echo "\033[0;32mServer setup completed.\033[0m"
 
+# Import shared edge configuration, preserving parameters introduced by this version.
+.PHONY: copy_config
+copy_config: export COPY_CONFIG_SOURCE = $(value SOURCE)
+copy_config:
+	@$(PYTHON) tools/copy_config.py
+
 # Removing virtual environment.
 clean:
 	@echo "\033[1;33mCleaning virtual environment...\033[0m"
