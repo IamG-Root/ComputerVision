@@ -22,6 +22,10 @@ PADDING = 20
 # Width of the dot representing an entity
 DOT_WIDTH = 5
 
+# Display-only room extents in meters. Z horizontal, X vertical (legacy orientation).
+VISUALIZER_ROOM_X = 18.226
+VISUALIZER_ROOM_Z = 21.630
+
 # ======= MQTT Parameters =======
 
 # Local Server Module name

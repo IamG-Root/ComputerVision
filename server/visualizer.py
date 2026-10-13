@@ -3,36 +3,64 @@ import json
 import queue
 import logging
 import config as cfg
-from tkinter import Tk, Canvas
+from tkinter import Tk, Canvas, Label
 from connection import MQTTClient, ConnectionInfo
+from visualizer_view import Viewport, draw_room, draw_entities
+
 
 def main():
-    window=Tk();window.title('Tracking Visualizer')
-    window.geometry(f'{cfg.WIDTH}x{cfg.HEIGHT}');window.resizable(False,False)
-    canvas=Canvas(window,width=cfg.WIDTH,height=cfg.HEIGHT);canvas.pack()
-    canvas.create_rectangle(cfg.PADDING,cfg.PADDING,cfg.WIDTH-cfg.PADDING,cfg.HEIGHT-cfg.PADDING,width=5,fill='gray')
-    latest=queue.Queue(maxsize=1)
-    def receive(client,userdata,msg):
+    logging.basicConfig(level=logging.INFO)
+    window = Tk()
+    window.title('Tracking Visualizer — coordinate in metri')
+    view = Viewport.fit(
+        getattr(cfg, 'VISUALIZER_ROOM_X', 18.226),
+        getattr(cfg, 'VISUALIZER_ROOM_Z', 21.630),
+        min(cfg.WIDTH, window.winfo_screenwidth() * .9),
+        min(cfg.HEIGHT, window.winfo_screenheight() * .85),
+        max(cfg.PADDING, 48),
+    )
+    window.resizable(False, False)
+    canvas = Canvas(window, width=view.width, height=view.height,
+                    background='#202830', highlightthickness=0)
+    canvas.pack()
+    status = Label(window, text=f'In attesa di messaggi su {cfg.LOCAL_PUB_TOPIC}', anchor='w')
+    status.pack(fill='x')
+    draw_room(canvas, view)
+    latest = queue.Queue(maxsize=1)
+
+    def receive(client, userdata, msg):
         try:
-            entities=json.loads(msg.payload.decode())
-            if not isinstance(entities,list):return
-            try:latest.get_nowait()
-            except queue.Empty:pass
+            entities = json.loads(msg.payload.decode())
+            if not isinstance(entities, list):
+                raise ValueError('POS must contain a list')
+            try:
+                latest.get_nowait()
+            except queue.Empty:
+                pass
             latest.put_nowait(entities)
-        except (ValueError,UnicodeError,queue.Full):logging.warning('Invalid visualizer payload')
+        except (ValueError, UnicodeError, queue.Full):
+            logging.warning('Invalid visualizer payload')
+
     def update():
         try:
-            entities=latest.get_nowait();canvas.delete('entity');canvas.delete('text')
-            for e in entities:
-                x,z=e['position'][0]/.011111,e['position'][1]/.011111
-                canvas.create_oval(z-cfg.DOT_WIDTH,x-cfg.DOT_WIDTH,z+cfg.DOT_WIDTH,x+cfg.DOT_WIDTH,fill='yellow',tags='entity')
-                canvas.create_text(z,x-25,text=f"ID: {e['id']} CLASS: {e['category']}",fill='yellow',tags='text')
-        except queue.Empty:pass
-        except (KeyError,TypeError,ValueError):logging.warning('Invalid POS entity')
-        window.after(100,update)
-    info=ConnectionInfo(cfg.VISUALIZER_MODULE_NAME,cfg.LOCAL_BROKER_IP_ADDRESS,cfg.LOCAL_BROKER_PORT,cfg.LOCAL_PUB_TOPIC,'null')
-    conn=MQTTClient(info,on_message=receive)
+            entities = latest.get_nowait()
+        except queue.Empty:
+            pass
+        else:
+            visible, outside, invalid = draw_entities(canvas, view, entities, cfg.DOT_WIDTH)
+            status.config(text=f'{cfg.LOCAL_PUB_TOPIC} · visibili: {visible} · '
+                               f'fuori area: {outside} · non validi: {invalid}')
+        window.after(100, update)
+
+    info = ConnectionInfo(cfg.VISUALIZER_MODULE_NAME, cfg.LOCAL_BROKER_IP_ADDRESS,
+                          cfg.LOCAL_BROKER_PORT, cfg.LOCAL_PUB_TOPIC, 'null')
+    conn = MQTTClient(info, on_message=receive)
     try:
-        update();window.mainloop()
-    finally:conn.stop()
-if __name__=='__main__':main()
+        update()
+        window.mainloop()
+    finally:
+        conn.stop()
+
+
+if __name__ == '__main__':
+    main()
