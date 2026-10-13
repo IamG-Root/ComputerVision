@@ -27,6 +27,11 @@ def evaluate(node, values):
         return factory(evaluate(item, values) for item in node.elts)
     if isinstance(node, ast.Dict) and all(key is not None for key in node.keys):
         return {evaluate(k, values): evaluate(v, values) for k, v in zip(node.keys, node.values)}
+    # Parse dict(key=value, ...) as data; never invoke a callable from the config.
+    if (isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
+            and node.func.id == 'dict' and not node.args
+            and all(keyword.arg is not None for keyword in node.keywords)):
+        return {keyword.arg: evaluate(keyword.value, values) for keyword in node.keywords}
     raise ValueError('Espressione non supportata: ' + ast.unparse(node))
 
 
@@ -66,7 +71,11 @@ def merge(source, destination):
     edits = []
     for name in shared:
         expression = source_nodes[name]
-        references = {n.id for n in ast.walk(expression) if isinstance(n, ast.Name)}
+        constructor_names = {n.func for n in ast.walk(expression)
+                             if isinstance(n, ast.Call) and isinstance(n.func, ast.Name)
+                             and n.func.id == 'dict'}
+        references = {n.id for n in ast.walk(expression)
+                      if isinstance(n, ast.Name) and n not in constructor_names}
         # Preserve dependencies such as TOPIC = "CV/" + MODULE_NAME when copied.
         replacement = (ast.unparse(expression)
                        if references <= shared else repr(source_values[name]))
@@ -133,7 +142,8 @@ def main():
     parser.add_argument('--dry-run', action='store_true')
     args = parser.parse_args()
     if not args.source:
-        parser.error('Specificare SOURCE: make copy_config SOURCE=../ComputerVision/module/config.py')
+        parser.error('Specificare SOURCE: make copy_config_module SOURCE=../ComputerVision/module/config.py '
+                     'oppure make copy_config_server SOURCE=../ComputerVision/server/config.py')
     try:
         copy_config(Path(args.source), args.destination, args.dry_run)
     except (OSError, ValueError, SyntaxError) as exc:

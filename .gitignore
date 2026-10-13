@@ -3,3 +3,4 @@ __pycache__/
 cvenv/
 logs/
 module/config.py.backup-*
+server/config.py.backup-*

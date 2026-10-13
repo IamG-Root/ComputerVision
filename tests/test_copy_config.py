@@ -39,6 +39,31 @@ class Merge(unittest.TestCase):
         self.assertEqual(config.parse_config(merged, 'result')[1], {'NAME': 'è', 'SIZE': 3})
         self.assertIn('# dimensione', merged)
 
+    def test_server_config_keeps_new_policy_and_imports_old_settings(self):
+        destination = (ROOT / 'server/config.py').read_text()
+        source = destination.split('# Internal MC-MOT settings')[0]
+        source = source.replace('LOCAL_BROKER_IP_ADDRESS = "localhost"',
+                                'LOCAL_BROKER_IP_ADDRESS = "10.1.2.3"')
+        source = source.replace('FIWARE_PUB_TOPIC = "/secret_key_cam/cam_1/attrs"',
+                                'FIWARE_PUB_TOPIC = "/custom/cam_9/attrs"')
+        merged, copied, retained, ignored = config.merge(source, destination)
+        _, before = config.parse_config(destination, 'before')
+        _, after = config.parse_config(merged, 'after')
+        self.assertEqual(after['LOCAL_BROKER_IP_ADDRESS'], '10.1.2.3')
+        self.assertEqual(after['FIWARE_PUB_TOPIC'], '/custom/cam_9/attrs')
+        self.assertIn('TRACK_POLICY', retained)
+        for key in retained:
+            self.assertEqual(after[key], before[key])
+        self.assertIn('TRACK_POLICY = dict(', merged)
+
+    def test_dict_constructor_is_data_and_derived_expressions_survive(self):
+        merged, *_ = config.merge('A=2\nPOLICY=dict(age=A + 1)\n', 'A=0\nPOLICY={}\n')
+        self.assertIn('dict(age=A + 1)', merged)
+        self.assertEqual(config.parse_config(merged, 'result')[1]['POLICY'], {'age': 3})
+        for expression in ('dict(age=evil())', 'dict(**OTHER)', 'dict(OTHER)'):
+            with self.assertRaises(ValueError):
+                config.merge('POLICY=' + expression, 'POLICY={}\n')
+
     def test_source_only_helpers_are_not_added(self):
         merged, copied, retained, ignored = config.merge('BASE=10\nPORT=BASE+2\n', 'PORT=0\nNEW=True\n')
         self.assertEqual(merged, 'PORT=12\nNEW=True\n')
@@ -100,7 +125,29 @@ class Files(unittest.TestCase):
         result = subprocess.run([sys.executable, str(ROOT/'tools/copy_config.py')], env=env,
                                 capture_output=True, text=True)
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn('make copy_config SOURCE=', result.stderr)
+        self.assertIn('make copy_config_module SOURCE=', result.stderr)
+        self.assertIn('make copy_config_server SOURCE=', result.stderr)
+
+    def test_both_make_targets_update_only_the_selected_config(self):
+        import shutil
+        (self.root/'Makefile').write_bytes((ROOT/'Makefile').read_bytes())
+        (self.root/'tools').mkdir()
+        shutil.copy2(ROOT/'tools/copy_config.py', self.root/'tools/copy_config.py')
+        for component in ('module', 'server'):
+            (self.root/component).mkdir()
+            shutil.copy2(ROOT/component/'config.py', self.root/component/'config.py')
+        for component, setting in (('module', 'MODULE_NAME'), ('server', 'SERVER_MODULE_NAME')):
+            other = 'server' if component == 'module' else 'module'
+            before = (self.root/other/'config.py').read_bytes()
+            self.src.write_text(f'{setting}="MIGRATED"\n')
+            result = subprocess.run(['make', f'copy_config_{component}',
+                                     f'PYTHON={sys.executable}', f'SOURCE={self.src}'],
+                                    cwd=self.root, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            values = config.parse_config((self.root/component/'config.py').read_text(), component)[1]
+            self.assertEqual(values[setting], 'MIGRATED')
+            self.assertEqual((self.root/other/'config.py').read_bytes(), before)
+            self.assertEqual(len(list((self.root/component).glob('config.py.backup-*'))), 1)
 
 
 if __name__ == '__main__':
