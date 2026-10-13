@@ -45,7 +45,7 @@ export_models: $(VENV_NAME)/bin/activate
 	@mkdir -p $(LOGS_DIR)
 	@for model in models/*.pt; do \
 	echo "\033[1;33mExporting [$$model]\033[0m"; \
-	$(VENV_NAME)/bin/yolo export model=$$model format=ncnn > logs/`basename $$model .pt`.log 2>&1; \
+	$(VENV_NAME)/bin/python tools/export_ncnn.py "$$model" > "$(LOGS_DIR)/$$(basename "$$model" .pt).log" 2>&1 || exit $$?; \
 	done
 	@echo "\033[0;32mAll models exported in ncnn format.\033[0m"
 
